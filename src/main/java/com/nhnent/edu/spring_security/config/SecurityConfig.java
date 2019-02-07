@@ -1,10 +1,13 @@
 package com.nhnent.edu.spring_security.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+
+import javax.sql.DataSource;
 
 /*
 <?xml version="1.0" encoding="UTF-8"?>
@@ -42,6 +45,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @Configuration
 @EnableWebSecurity(debug = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    @Autowired(required = false)
+    private DataSource dataSource;
+
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
@@ -49,12 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/private-project/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_MEMBER")
                 .antMatchers("/project/**").authenticated()
                 .antMatchers("/redirect-index").authenticated()
-                /*
-                 * TODO : #5 실습 - `/notice` 로그인을 하지 않아도 접근 가능하도록 설정하세요.
-                 */
-                // TODO : #4 index 페이지는 로그인 없이도 접근 가능하지만, 다른 모든 페이지는 로그인해야만 접근 가능함.
-                .antMatchers("/").permitAll()
-                .anyRequest().authenticated()
+                .anyRequest().permitAll()
                 .and()
             .requiresChannel()
                 .anyRequest().requiresInsecure()
@@ -76,18 +78,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-            .withUser("admin")
-                .password("{noop}admin")
-                .authorities("ROLE_ADMIN")
-                .and()
-            .withUser("member")
-                .password("{noop}member")
-                .authorities("ROLE_MEMBER")
-                .and()
-            .withUser("guest")
-                .password("{noop}guest")
-                .authorities("ROLE_GUEST");
+        // TODO : #4 jdbc-user-service
+        auth.jdbcAuthentication()
+            .dataSource(dataSource)
+            .usersByUsernameQuery("SELECT MNAME, PWD, TRUE FROM MEMBERS WHERE MNAME = ?")
+            .authoritiesByUsernameQuery("SELECT MNAME, AUTHORITY FROM AUTHORITIES WHERE MNAME = ?");
+
+//        auth.inMemoryAuthentication()
+//            .withUser("admin")
+//                .password("{noop}admin")
+//                .authorities("ROLE_ADMIN")
+//                .and()
+//            .withUser("member")
+//                .password("{noop}member")
+//                .authorities("ROLE_MEMBER")
+//                .and()
+//            .withUser("guest")
+//                .password("{noop}guest")
+//                .authorities("ROLE_GUEST");
     }
 
 }

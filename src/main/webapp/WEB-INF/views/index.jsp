@@ -13,7 +13,6 @@
 <jsp:include page="fragments/heading.jsp" />
 
 <ul>
-        <!-- TODO : #3 add link to notice -->
         <li>
             <a href="/notice">Notice</a>
         </li>

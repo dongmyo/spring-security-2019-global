@@ -1,6 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" trimDirectiveWhitespaces="true" %>
 <!DOCTYPE html>
-<!-- TODO : #2 notice view template -->
 <html>
 <head lang="ko">
     <meta charset="UTF-8">
