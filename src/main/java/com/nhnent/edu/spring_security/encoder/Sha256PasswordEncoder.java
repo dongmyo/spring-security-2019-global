@@ -7,8 +7,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-// TODO : #3 SHA-256 hashing password encoder without salt
-//        cf.) org.springframework.security.crypto.password.StandardPasswordEncoder
 public class Sha256PasswordEncoder implements PasswordEncoder {
     private final Digester digester;
 

@@ -1,6 +1,7 @@
 package com.nhnent.edu.spring_security.config;
 
 import com.nhnent.edu.spring_security.encoder.Sha256PasswordEncoder;
+import com.nhnent.edu.spring_security.security.CustomLoginFailureHandler;
 import com.nhnent.edu.spring_security.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -69,7 +70,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .requiresChannel()
                 .anyRequest().requiresInsecure()
                 .and()
+            // TODO : #1 customize login.
             .formLogin()
+                .loginPage("/login/form")
+                .usernameParameter("name")
+                .passwordParameter("pwd")
+                .loginProcessingUrl("/login/process")
+                .failureHandler(loginFailureHandler())
                 .and()
             .logout()
                 .and()
@@ -93,10 +100,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(customUserDetailsService);
-        // TODO : #4 set PasswordEncoder.
         authenticationProvider.setPasswordEncoder(new Sha256PasswordEncoder());
 
         return authenticationProvider;
+    }
+
+    @Bean
+    public CustomLoginFailureHandler loginFailureHandler() {
+        return new CustomLoginFailureHandler();
     }
 
 }
