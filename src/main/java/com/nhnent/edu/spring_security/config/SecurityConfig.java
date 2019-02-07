@@ -51,15 +51,31 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/redirect-index").authenticated()
                 .anyRequest().permitAll()
                 .and()
+            // TODO : #2 secure channel
+            .requiresChannel()
+                /*
+                 * TODO : #3 실습 - 관리툴/비공개프로젝트/공개 프로젝트 페이지를 secure로 설정해보세요.
+                 */
+                /*.anyRequest().requiresSecure()*/
+                .anyRequest().requiresInsecure()
+                .and()
             .formLogin()
                 .and()
             .logout()
                 .and()
+            /* TODO : #4 실습 - enable csrf */
             .csrf()
                 .disable()
+            /*
+             * TODO : #5 실습 - response headers
+             */
+            /*.headers()
+                .defaultsDisabled()
+                .cacheControl()*/
             .sessionManagement()
                 .sessionFixation()
-                    .none();
+                    .none()
+        ;
     }
 
     @Override
