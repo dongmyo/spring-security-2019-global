@@ -9,14 +9,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.crypto.password.StandardPasswordEncoder;
-
-import javax.sql.DataSource;
 
 /*
 <?xml version="1.0" encoding="UTF-8"?>
@@ -53,6 +49,8 @@ import javax.sql.DataSource;
  */
 @Configuration
 @EnableWebSecurity(debug = true)
+// TODO : #6 `@EnableGlobalMethodSecurity(prePostEnabled = true)`
+//@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired(required = false)
     private CustomUserDetailsService customUserDetailsService;
@@ -61,7 +59,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.requiresChannel()
-                /* TODO : #2 실습 - 관리툴/비공개 프로젝트/프로젝트 페이지는 secure로 접속되도록 설정해주세요. */
                 .antMatchers("/admin/**").requiresSecure()
                 .antMatchers("/private-project/**").requiresSecure()
                 .antMatchers("/project/**").requiresSecure()
@@ -69,7 +66,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
             .authorizeRequests()
                 .antMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
-                /* TODO : #3 실습 - 비공개 프로젝트 URL은 (`/private-project/**`) ADMIN 이나 MEMBER 권한이 있을 때 접근 가능하도록 설정해주세요. */
                 .antMatchers("/private-project/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_MEMBER")
                 .antMatchers("/project/**").authenticated()
                 .antMatchers("/redirect-index").authenticated()
@@ -86,11 +82,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
             .headers()
                 .defaultsDisabled()
-                /* TODO : #4 실습 - Security HTTP Response header 중 `X-Frame-Options` 헤더의 값을 SAMEORIGIN으로 설정해주세요. */
                 .frameOptions().sameOrigin()
                 .and()
             .exceptionHandling()
-                /* TODO : #11 실습 - custom 403 에러 페이지(`/error/403`)를 설정해주세요. */
                 .accessDeniedPage("/error/403")
                 .and()
             .csrf()

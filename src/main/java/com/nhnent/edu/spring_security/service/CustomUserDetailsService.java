@@ -30,8 +30,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         String password = member.get().getPassword();
         String authority = member.get().getAuthority().getAuthority();
 
-        // TODO : #5 실습 - UserDetails의 custom 구현체를 반환하세요.
-        //        cf.) CustomUserDetails
         return new CustomUserDetails(username, password, authority);
     }
 

@@ -32,6 +32,11 @@
             <a href="/private-project/2">Private Project</a>
         </li>
     </sec:authorize>
+        <!-- TODO: #4 그런데 실수로 모두가 접근 가능하게 링크가 걸려버린 `/admin-only`. -->
+        <!--       이 상태에서 실행을 하면? -->
+        <li>
+            <a href="/admin-only">admin-only</a>
+        </li>
 </ul>
 
 <br />
