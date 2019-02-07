@@ -60,15 +60,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
+        http.requiresChannel()
+                /* TODO : #2 실습 - 관리툴/비공개 프로젝트/프로젝트 페이지는 secure로 접속되도록 설정해주세요. */
+                .anyRequest().requiresInsecure()
+                .and()
+            .authorizeRequests()
                 .antMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
-                .antMatchers("/private-project/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_MEMBER")
+                /* TODO : #3 실습 - 비공개 프로젝트 URL은 (`/private-project/**`) ADMIN 이나 MEMBER 권한이 있을 때 접근 가능하도록 설정해주세요. */
                 .antMatchers("/project/**").authenticated()
                 .antMatchers("/redirect-index").authenticated()
                 .anyRequest().permitAll()
-                .and()
-            .requiresChannel()
-                .anyRequest().requiresInsecure()
                 .and()
             .formLogin()
                 .loginPage("/login/form")
@@ -79,11 +80,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
             .logout()
                 .and()
+            .headers()
+                .defaultsDisabled()
+                /* TODO : #4 실습 - Security HTTP Response header 중 `X-Frame-Options` 헤더의 값을 SAMEORIGIN으로 설정해주세요. */
+                .and()
+            .exceptionHandling()
+                /* TODO : #11 실습 - custom 403 에러 페이지(`/error/403`)를 설정해주세요. */
+                .and()
             .csrf()
                 .disable()
-            /*.headers()
-                .defaultsDisabled()
-                .cacheControl()*/
             .sessionManagement()
                 .sessionFixation()
                     .none()
@@ -100,7 +105,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(customUserDetailsService);
         authenticationProvider.setPasswordEncoder(new Sha256PasswordEncoder());
-        // TODO : #3 UsernameNotFoundException, BadCredentialsException 구분하도록 설정.
         authenticationProvider.setHideUserNotFoundExceptions(false);
 
         return authenticationProvider;

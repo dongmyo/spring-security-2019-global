@@ -12,7 +12,6 @@
 <br />
 <br />
 
-<!-- TODO : #2 로그인 에러 출력 -->
 <c:if test="${param.error != null}">
     <div style="color: red; ">ID or password is invalid</div>
     <br />

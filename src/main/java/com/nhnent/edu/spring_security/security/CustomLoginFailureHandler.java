@@ -4,6 +4,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.DefaultRedirectStrategy;
+import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
 import javax.servlet.ServletException;
@@ -13,12 +14,13 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class CustomLoginFailureHandler implements AuthenticationFailureHandler {
+    // TODO : #6 실습 - RedirectStrategy interface의 구현체를 이용해서 redirectStrategy 객체를 생성하세요.
+    private RedirectStrategy redirectStrategy = null;
+
+
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
                                         AuthenticationException exception) throws IOException, ServletException {
-        /*
-         * TODO : #1 직접 구현하세요.
-         */
         HttpSession session = request.getSession();
 
         boolean isInvalidUsername = (exception instanceof UsernameNotFoundException);
@@ -27,7 +29,7 @@ public class CustomLoginFailureHandler implements AuthenticationFailureHandler {
         session.setAttribute("invalidUsername", isInvalidUsername);
         session.setAttribute("invalidPassword", isInvalidPassword);
 
-        new DefaultRedirectStrategy().sendRedirect(request, response, "/login/form?error");
+        redirectStrategy.sendRedirect(request, response, "/login/form?error");
     }
 
 }

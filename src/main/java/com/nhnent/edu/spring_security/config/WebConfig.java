@@ -52,6 +52,8 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addRedirectViewController("/redirect-index", "/");
         registry.addViewController("/notice").setViewName("notice");
         registry.addViewController("/login/form").setViewName("loginForm");
+        // TODO : #9 `/error/403` 요청 시 `/WEB-INF/views/error403.jsp` view template 응답하도록 설정.
+        registry.addViewController("/error/403").setViewName("error403");
     }
 
     @Bean
