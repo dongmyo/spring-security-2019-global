@@ -34,6 +34,13 @@ public class CustomUserDetailsService implements UserDetailsService {
         /*
          * TODO : #11 실습 - 직접 구현하세요.
          */
+        Optional<Member> member = memberRepository.findById(username);
+        if (!member.isPresent()) {
+            throw new UsernameNotFoundException("Not found member : " + username);
+        }
+
+        password = member.get().getPassword();
+        authorities.add(new SimpleGrantedAuthority(member.get().getAuthority().getAuthority()));
 
         return new User(username, password, authorities);
     }
