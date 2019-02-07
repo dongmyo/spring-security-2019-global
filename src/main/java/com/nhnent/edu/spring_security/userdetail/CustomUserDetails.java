@@ -21,7 +21,6 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // TODO : #7 실습 - this.authority 값과 SimpleGrantedAuthority 클래스를 이용해서 반환값을 완성하세요.
         return Collections.singletonList(new SimpleGrantedAuthority(this.authority));
     }
 

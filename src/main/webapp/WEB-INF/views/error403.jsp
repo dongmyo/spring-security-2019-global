@@ -1,7 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
-<!-- TODO : #10 custom 403 error page -->
 <html>
 <head lang="ko">
     <meta charset="UTF-8">
