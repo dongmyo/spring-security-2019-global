@@ -39,6 +39,16 @@
         <scope>import</scope>
       </dependency>
 
+      <!-- TODO : #1 spring data bom -->
+      <!-- spring data -->
+      <dependency>
+        <groupId>org.springframework.data</groupId>
+        <artifactId>spring-data-releasetrain</artifactId>
+        <version>Lovelace-SR4</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
     </dependencies>
   </dependencyManagement>
 
@@ -113,7 +123,6 @@
       <scope>test</scope>
     </dependency>
 
-    <!-- TODO : #1 H2 database, DBCP2 -->
     <!-- h2 -->
     <dependency>
       <groupId>com.h2database</groupId>
@@ -126,6 +135,20 @@
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-dbcp2</artifactId>
       <version>2.5.0</version>
+    </dependency>
+
+    <!-- TODO : #2 spring data JPA, hibernate -->
+    <!-- spring data jpa -->
+    <dependency>
+      <groupId>org.springframework.data</groupId>
+      <artifactId>spring-data-jpa</artifactId>
+    </dependency>
+
+    <!-- hibernate -->
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-core</artifactId>
+      <version>5.3.7.Final</version>
     </dependency>
 
   </dependencies>

@@ -50,7 +50,6 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addViewController("/project/**").setViewName("project");
         registry.addViewController("/private-project/**").setViewName("private-project");
         registry.addRedirectViewController("/redirect-index", "/");
-        registry.addViewController("/notice").setViewName("notice");
     }
 
     @Bean

@@ -1,11 +1,16 @@
 package com.nhnent.edu.spring_security.config;
 
+import com.nhnent.edu.spring_security.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 
 import javax.sql.DataSource;
 
@@ -45,8 +50,9 @@ import javax.sql.DataSource;
 @Configuration
 @EnableWebSecurity(debug = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    // TODO : #12 CustomUserDetailsService injected by field injection.
     @Autowired(required = false)
-    private DataSource dataSource;
+    private CustomUserDetailsService customUserDetailsService;
 
 
     @Override
@@ -78,24 +84,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        // TODO : #4 jdbc-user-service
-        auth.jdbcAuthentication()
-            .dataSource(dataSource)
-            .usersByUsernameQuery("SELECT MNAME, PWD, TRUE FROM MEMBERS WHERE MNAME = ?")
-            .authoritiesByUsernameQuery("SELECT MNAME, AUTHORITY FROM AUTHORITIES WHERE MNAME = ?");
+        // TODO : #13 AuthenticationManager -> AuthenticationProvider.
+        auth.authenticationProvider(authenticationProvider());
+    }
 
-//        auth.inMemoryAuthentication()
-//            .withUser("admin")
-//                .password("{noop}admin")
-//                .authorities("ROLE_ADMIN")
-//                .and()
-//            .withUser("member")
-//                .password("{noop}member")
-//                .authorities("ROLE_MEMBER")
-//                .and()
-//            .withUser("guest")
-//                .password("{noop}guest")
-//                .authorities("ROLE_GUEST");
+    // TODO : #14 AuthenticationProvider bean.
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
+        // TODO : #15 DaoAuthenticationProvider -> UserDetailsService.
+        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+        authenticationProvider.setUserDetailsService(customUserDetailsService);
+
+        return authenticationProvider;
     }
 
 }
