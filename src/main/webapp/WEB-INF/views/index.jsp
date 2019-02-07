@@ -8,7 +8,6 @@
     <title>Main</title>
 </head>
 <body>
-<!-- TODO #6 : views -->
 <h1>Main</h1>
 
 <jsp:include page="fragments/heading.jsp" />

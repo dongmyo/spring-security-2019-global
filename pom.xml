@@ -61,7 +61,6 @@
       <scope>test</scope>
     </dependency>
 
-    <!-- TODO #1 : Dependencies of Spring Security -->
     <!-- spring security -->
     <dependency>
       <groupId>org.springframework.security</groupId>
