@@ -7,15 +7,29 @@
     <title>Login</title>
 </head>
 <body>
-<!-- TODO : #3 Login Form -->
 
 <h1>Login</h1>
 <br />
 <br />
 
+<!-- TODO : #2 로그인 에러 출력 -->
+<c:if test="${param.error != null}">
+    <div style="color: red; ">ID or password is invalid</div>
+    <br />
+</c:if>
+
 <form method="post" action="/login/process">
-    ID : <input type="text" name="name" value="" /><br />
-    PW : <input type="password" name="pwd" value="" /><br />
+    ID : <input type="text" name="name" value="" />
+    <c:if test="${invalidUsername == true}">
+        <span style="color: red; ">Not Found ID</span>
+    </c:if>
+    <br />
+
+    PW : <input type="password" name="pwd" value="" />
+    <c:if test="${invalidPassword == true}">
+        <span style="color: red; ">ID and password do not match.</span>
+    </c:if>
+    <br />
     <br />
 
     <input type="submit" value="Login!" />

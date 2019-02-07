@@ -70,7 +70,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .requiresChannel()
                 .anyRequest().requiresInsecure()
                 .and()
-            // TODO : #1 customize login.
             .formLogin()
                 .loginPage("/login/form")
                 .usernameParameter("name")
@@ -101,6 +100,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(customUserDetailsService);
         authenticationProvider.setPasswordEncoder(new Sha256PasswordEncoder());
+        // TODO : #3 UsernameNotFoundException, BadCredentialsException 구분하도록 설정.
+        authenticationProvider.setHideUserNotFoundExceptions(false);
 
         return authenticationProvider;
     }
