@@ -12,9 +12,10 @@ CREATE TABLE IF NOT EXISTS AUTHORITIES (
     PRIMARY KEY(MNAME)
 );
 
-MERGE INTO MEMBERS VALUES ( 'admin' , '{noop}admin' );
-MERGE INTO MEMBERS VALUES ( 'member', '{noop}member' );
-MERGE INTO MEMBERS VALUES ( 'guest' , '{noop}guest' );
+-- TODO : #2 change password column value
+MERGE INTO MEMBERS VALUES ( 'admin' , HASH('SHA256', STRINGTOUTF8('admin' ), 1024) );
+MERGE INTO MEMBERS VALUES ( 'member', HASH('SHA256', STRINGTOUTF8('member'), 1024) );
+MERGE INTO MEMBERS VALUES ( 'guest' , HASH('SHA256', STRINGTOUTF8('guest' ), 1024) );
 
 MERGE INTO AUTHORITIES VALUES ( 'admin' , 'ROLE_ADMIN'  );
 MERGE INTO AUTHORITIES VALUES ( 'member', 'ROLE_MEMBER' );

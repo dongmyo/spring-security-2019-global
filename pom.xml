@@ -39,7 +39,6 @@
         <scope>import</scope>
       </dependency>
 
-      <!-- TODO : #1 spring data bom -->
       <!-- spring data -->
       <dependency>
         <groupId>org.springframework.data</groupId>
@@ -137,7 +136,6 @@
       <version>2.5.0</version>
     </dependency>
 
-    <!-- TODO : #2 spring data JPA, hibernate -->
     <!-- spring data jpa -->
     <dependency>
       <groupId>org.springframework.data</groupId>

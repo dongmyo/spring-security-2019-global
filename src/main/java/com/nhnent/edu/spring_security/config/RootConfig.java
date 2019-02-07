@@ -30,7 +30,6 @@ import java.util.Properties;
 
 </beans>
  */
-// TODO : #3 EnableJpaRepositories, EnableTransactionManagement
 @EnableJpaRepositories(basePackages = "com.nhnent.edu.spring_security.repository")
 @EnableTransactionManagement
 @Configuration
@@ -48,7 +47,6 @@ public class RootConfig {
         return dataSource;
     }
 
-    // TODO : #4 JPA-related bean configuration
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
         LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();

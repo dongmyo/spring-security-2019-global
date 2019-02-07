@@ -14,13 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-// TODO : #9 CustomUserDetailsService.
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
     private final MemberRepository memberRepository;
 
 
-    // TODO : #10 MemberRepository injected by constructor.
     public CustomUserDetailsService(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
     }
@@ -31,9 +29,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         String password = null;
         List<GrantedAuthority> authorities = new ArrayList<>();
 
-        /*
-         * TODO : #11 실습 - 직접 구현하세요.
-         */
         Optional<Member> member = memberRepository.findById(username);
         if (!member.isPresent()) {
             throw new UsernameNotFoundException("Not found member : " + username);

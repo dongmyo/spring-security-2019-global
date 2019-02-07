@@ -7,7 +7,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
-// TODO : #5 Member Entity
 @Entity
 @Table(name = "MEMBERS")
 public class Member {
@@ -19,7 +18,6 @@ public class Member {
     private String password;
 
 
-    // TODO : #7 연관관계 맵핑
     @OneToOne(optional = false)
     @PrimaryKeyJoinColumn
     private Authority authority;

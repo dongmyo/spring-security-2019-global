@@ -5,7 +5,6 @@ import org.springframework.data.repository.Repository;
 
 import java.util.Optional;
 
-// TODO : #8 Repository
 public interface MemberRepository extends Repository<Member, String> {
     Optional<Member> findById(String name);
 

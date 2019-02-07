@@ -5,7 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-// TODO : #6 Authority Entity
 @Entity
 @Table(name = "AUTHORITIES")
 public class Authority {
