@@ -49,26 +49,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/private-project/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_MEMBER")
                 .antMatchers("/project/**").authenticated()
                 .antMatchers("/redirect-index").authenticated()
-                .anyRequest().permitAll()
-                .and()
-            // TODO : #2 secure channel
-            .requiresChannel()
                 /*
-                 * TODO : #3 실습 - 관리툴/비공개프로젝트/공개 프로젝트 페이지를 secure로 설정해보세요.
+                 * TODO : #5 실습 - `/notice` 로그인을 하지 않아도 접근 가능하도록 설정하세요.
                  */
-                /*.anyRequest().requiresSecure()*/
+                // TODO : #4 index 페이지는 로그인 없이도 접근 가능하지만, 다른 모든 페이지는 로그인해야만 접근 가능함.
+                .antMatchers("/").permitAll()
+                .anyRequest().authenticated()
+                .and()
+            .requiresChannel()
                 .anyRequest().requiresInsecure()
                 .and()
             .formLogin()
                 .and()
             .logout()
                 .and()
-            /* TODO : #4 실습 - enable csrf */
             .csrf()
                 .disable()
-            /*
-             * TODO : #5 실습 - response headers
-             */
             /*.headers()
                 .defaultsDisabled()
                 .cacheControl()*/

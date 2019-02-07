@@ -13,6 +13,10 @@
 <jsp:include page="fragments/heading.jsp" />
 
 <ul>
+        <!-- TODO : #3 add link to notice -->
+        <li>
+            <a href="/notice">Notice</a>
+        </li>
     <sec:authorize access="hasRole('ROLE_ADMIN')">
         <li>
             <a href="/admin/manage">Admin Tool</a>
