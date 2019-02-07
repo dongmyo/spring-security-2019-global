@@ -12,7 +12,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-// TODO : #3 CustomAuthorizationRequestResolver 클래스 작성.
 public class CustomAuthorizationRequestResolver implements OAuth2AuthorizationRequestResolver {
     private final OAuth2AuthorizationRequestResolver delegate;
 

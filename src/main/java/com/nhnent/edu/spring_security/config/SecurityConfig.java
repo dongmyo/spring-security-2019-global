@@ -1,8 +1,6 @@
 package com.nhnent.edu.spring_security.config;
 
 import com.nhnent.edu.spring_security.encoder.Sha256PasswordEncoder;
-import com.nhnent.edu.spring_security.oauth2.CustomAuthorizationRequestResolver;
-import com.nhnent.edu.spring_security.oauth2.CustomRequestEntityConverter;
 import com.nhnent.edu.spring_security.oauth2.PaycoOAuth2User;
 import com.nhnent.edu.spring_security.security.CustomLoginFailureHandler;
 import com.nhnent.edu.spring_security.service.CustomUserDetailsService;
@@ -15,6 +13,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.oauth2.client.CommonOAuth2Provider;
 import org.springframework.security.oauth2.client.InMemoryOAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
@@ -23,9 +22,6 @@ import org.springframework.security.oauth2.client.registration.InMemoryClientReg
 import org.springframework.security.oauth2.client.userinfo.CustomUserTypesOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
-import org.springframework.security.oauth2.core.AuthenticationMethod;
-import org.springframework.security.oauth2.core.AuthorizationGrantType;
-import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.HashMap;
@@ -87,14 +83,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().permitAll()
                 .and()
             .oauth2Login()
-                .clientRegistrationRepository(clientRegistrationRepository())
-                .authorizedClientService(authorizedClientService())
-                .authorizationEndpoint()
-                    .authorizationRequestResolver(customAuthorizationRequestResolver())
-                    .and()
-                .userInfoEndpoint()
-                    .userService(oauth2UserService())
-                    .and()
+                // TODO : #4 실습 - clientRegistrationRepository와 authorizedClientService를 설정해주세요.
                 .and()
 //            .formLogin()
 //                .loginPage("/login/form")
@@ -142,45 +131,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public ClientRegistrationRepository clientRegistrationRepository() {
-        return new InMemoryClientRegistrationRepository(ClientRegistration.withRegistrationId("payco")
-                                                                          .clientId("3RDU4G5NI_cxk4VNvSI7")
-                                                                          .clientSecret("fxVFAe2HjN98DOyrV6kyJVHD")
-                                                                          .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-                                                                          .redirectUriTemplate("{baseUrl}/login/oauth2/code/{registrationId}")
-                                                                          .authorizationUri("https://alpha-id.payco.com/oauth2.0/authorize")
-                                                                          .tokenUri("https://alpha-id.payco.com/oauth2.0/token")
-                                                                          .clientAuthenticationMethod(ClientAuthenticationMethod.POST)
-                                                                          .userInfoUri("https://dev-apis.krp.toastoven.net/payco/friends/getMemberProfileByFriendsToken.json")
-                                                                          .userInfoAuthenticationMethod(AuthenticationMethod.FORM)
-                                                                          .build());
+        // TODO : #2 실습 - ClientRegistrationRepository 구현체를 생성하세요.
+        //        아래 github() 메서드를 활용하세요.
+        return null;
     }
 
     @Bean
     public OAuth2AuthorizedClientService authorizedClientService() {
-        return new InMemoryOAuth2AuthorizedClientService(clientRegistrationRepository());
+        // TODO : #3 실습 - OAuth2AuthorizedClientService 구현체를 생성하세요.
+        return null;
     }
 
-    @Bean
-    public CustomAuthorizationRequestResolver customAuthorizationRequestResolver() {
-        return new CustomAuthorizationRequestResolver(clientRegistrationRepository());
-    }
-
-    @Bean
-    public OAuth2UserService<OAuth2UserRequest, OAuth2User> oauth2UserService() {
-        // TODO : #1 DefaultOAuth2UserService 대신 CustomUserTypesOAuth2UserService 사용.
-        //        PAYCO ID UserInfo 응답 결과를 지원하는 OAuth2User 확장 클래스 PaycoOAuth2User 정보를 생성자에 전달.
-        Map<String, Class<? extends OAuth2User>> customUserTypes = new HashMap<>();
-        customUserTypes.put("payco", PaycoOAuth2User.class);
-
-        CustomUserTypesOAuth2UserService oauth2UserService = new CustomUserTypesOAuth2UserService(customUserTypes);
-        oauth2UserService.setRequestEntityConverter(requestEntityConverter());
-
-        return oauth2UserService;
-    }
-
-    @Bean
-    public CustomRequestEntityConverter requestEntityConverter() {
-        return new CustomRequestEntityConverter();
+    private ClientRegistration github() {
+        return CommonOAuth2Provider.GITHUB.getBuilder("github")
+                                          .userNameAttributeName("name")
+                                          // TODO : #1 - github에서 생성한 어플리케이션 정보를 참조해서 client_id와 client_secret을 등록하세요.
+                                          .build();
     }
 
 }

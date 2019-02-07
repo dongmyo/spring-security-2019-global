@@ -13,8 +13,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 
-// TODO : #3 custom RequestEntity Converter 클래스 작성.
-//        Converter of (OAuth2UserRequest -> RequestEntity).
 public class CustomRequestEntityConverter implements Converter<OAuth2UserRequest, RequestEntity<?>> {
     @Override
     public RequestEntity<?> convert(OAuth2UserRequest userRequest) {
