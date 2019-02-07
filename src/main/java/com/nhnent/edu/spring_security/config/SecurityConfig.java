@@ -2,6 +2,7 @@ package com.nhnent.edu.spring_security.config;
 
 import com.nhnent.edu.spring_security.encoder.Sha256PasswordEncoder;
 import com.nhnent.edu.spring_security.oauth2.CustomAuthorizationRequestResolver;
+import com.nhnent.edu.spring_security.oauth2.CustomRequestEntityConverter;
 import com.nhnent.edu.spring_security.security.CustomLoginFailureHandler;
 import com.nhnent.edu.spring_security.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +19,16 @@ import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
+import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.AuthenticationMethod;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
+import org.springframework.security.oauth2.core.user.OAuth2User;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /*
 <?xml version="1.0" encoding="UTF-8"?>
@@ -80,9 +88,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .oauth2Login()
                 .clientRegistrationRepository(clientRegistrationRepository())
                 .authorizedClientService(authorizedClientService())
-                // TODO : #1 authorizationRequestResolver 설정
                 .authorizationEndpoint()
                     .authorizationRequestResolver(customAuthorizationRequestResolver())
+                    .and()
+                .userInfoEndpoint()
+                    .userService(oauth2UserService())
                     .and()
                 .and()
 //            .formLogin()
@@ -149,10 +159,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new InMemoryOAuth2AuthorizedClientService(clientRegistrationRepository());
     }
 
-    // TODO : #2 customize OAuth2AuthorizationRequestResolver.
     @Bean
     public CustomAuthorizationRequestResolver customAuthorizationRequestResolver() {
         return new CustomAuthorizationRequestResolver(clientRegistrationRepository());
+    }
+
+    // TODO : #1 DefaultOAuth2UserService를 확장.
+    @Bean
+    public OAuth2UserService<OAuth2UserRequest, OAuth2User> oauth2UserService() {
+        DefaultOAuth2UserService oauth2UserService = new DefaultOAuth2UserService();
+        oauth2UserService.setRequestEntityConverter(requestEntityConverter());
+
+        return oauth2UserService;
+    }
+
+    // TODO : #2 custom RequestEntity Converter 빈 등록.
+    @Bean
+    public CustomRequestEntityConverter requestEntityConverter() {
+        return new CustomRequestEntityConverter();
     }
 
 }
