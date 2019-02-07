@@ -10,6 +10,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 
+// TODO : #2 PAYCO ID UserInfo 응답 결과에 매칭되는 OAuth2User 확장 클래스.
+//        UserDetails interface까지 구현하면 기존 코드와 호환 가능.
 public class PaycoOAuth2User implements OAuth2User, UserDetails {
     private Header header;
     private Map<String, Object> memberProfile;

@@ -3,6 +3,7 @@ package com.nhnent.edu.spring_security.config;
 import com.nhnent.edu.spring_security.encoder.Sha256PasswordEncoder;
 import com.nhnent.edu.spring_security.oauth2.CustomAuthorizationRequestResolver;
 import com.nhnent.edu.spring_security.oauth2.CustomRequestEntityConverter;
+import com.nhnent.edu.spring_security.oauth2.PaycoOAuth2User;
 import com.nhnent.edu.spring_security.security.CustomLoginFailureHandler;
 import com.nhnent.edu.spring_security.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
-import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
+import org.springframework.security.oauth2.client.userinfo.CustomUserTypesOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.AuthenticationMethod;
@@ -164,16 +165,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new CustomAuthorizationRequestResolver(clientRegistrationRepository());
     }
 
-    // TODO : #1 DefaultOAuth2UserService를 확장.
     @Bean
     public OAuth2UserService<OAuth2UserRequest, OAuth2User> oauth2UserService() {
-        DefaultOAuth2UserService oauth2UserService = new DefaultOAuth2UserService();
+        // TODO : #1 DefaultOAuth2UserService 대신 CustomUserTypesOAuth2UserService 사용.
+        //        PAYCO ID UserInfo 응답 결과를 지원하는 OAuth2User 확장 클래스 PaycoOAuth2User 정보를 생성자에 전달.
+        Map<String, Class<? extends OAuth2User>> customUserTypes = new HashMap<>();
+        customUserTypes.put("payco", PaycoOAuth2User.class);
+
+        CustomUserTypesOAuth2UserService oauth2UserService = new CustomUserTypesOAuth2UserService(customUserTypes);
         oauth2UserService.setRequestEntityConverter(requestEntityConverter());
 
         return oauth2UserService;
     }
 
-    // TODO : #2 custom RequestEntity Converter 빈 등록.
     @Bean
     public CustomRequestEntityConverter requestEntityConverter() {
         return new CustomRequestEntityConverter();
