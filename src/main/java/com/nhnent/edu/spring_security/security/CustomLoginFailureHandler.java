@@ -15,7 +15,7 @@ import java.io.IOException;
 
 public class CustomLoginFailureHandler implements AuthenticationFailureHandler {
     // TODO : #6 실습 - RedirectStrategy interface의 구현체를 이용해서 redirectStrategy 객체를 생성하세요.
-    private RedirectStrategy redirectStrategy = null;
+    private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
 
     @Override
