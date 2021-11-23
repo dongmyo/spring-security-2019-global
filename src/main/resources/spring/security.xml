@@ -16,6 +16,7 @@
         <csrf disabled="true" />
         <form-login />
         <logout />
+        <session-management session-fixation-protection="none" />
     </http>
 
     <authentication-manager>
