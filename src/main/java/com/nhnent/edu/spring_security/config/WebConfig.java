@@ -1,9 +1,7 @@
 package com.nhnent.edu.spring_security.config;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
@@ -40,8 +38,6 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 </beans:beans>
  */
 @Configuration
-@EnableWebMvc
-@ComponentScan("com.nhnent.edu.spring_security.controller")
 public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
